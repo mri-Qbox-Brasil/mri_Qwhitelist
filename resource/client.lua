@@ -35,8 +35,8 @@ function beginExam()
             centered = true,
             cancel = true,
             labels = {
-                confirm = 'Begin Exam',
-                cancel = 'Close'
+                confirm = 'Iniciar',
+                cancel = 'Cancelar'
             }
         })
         if alert == 'cancel' then
@@ -78,8 +78,8 @@ function beginExam()
                 centered = true,
                 cancel = false,
                 labels = {
-                    confirm = 'Play',
-                    cancel = 'Close'
+                    confirm = 'Jogar',
+                    cancel = 'Fechar'
                 }
             })
             lib.callback.await('stevo_citizenship:addCitizenship', false)
@@ -97,8 +97,8 @@ function beginExam()
                 centered = true,
                 cancel = false,
                 labels = {
-                    confirm = 'Close',
-                    cancel = 'Close'
+                    confirm = 'Fechar',
+                    cancel = 'Fechar'
                 }
             })
         end

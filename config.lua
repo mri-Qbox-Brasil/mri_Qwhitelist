@@ -2,32 +2,32 @@ return {
     
 
 
-    loadNotify = 'You must complete citizenship exam to play!', -- Notification when player loads in without completing citizenship.
-    escapeNotify = 'You must complete citizenship exam to play!', -- Notification when player tries to leave citizenship office.
+    loadNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player loads in without completing citizenship.
+    escapeNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player tries to leave citizenship office.
 
     -- Labels for Exam:
-    StartExamLabel = 'Start Citizenship Exam',
-    StartExamHeader = 'Citizenship Exam',
-    StartExamContent = 'All new citizens must pass their exam before they can play. Take your time, answer with common sense, and do not answer randomly.',
-    SuccessHeader = 'You have Passed the Citizenship exam!',
-    SuccessContent = 'Welcome to our server!',    
-    FailedHeader = 'You have Failed the Citizenship exam!',
-    FailedContent = 'Please try again.',
+    StartExamLabel = 'Iniciar o exame de cidadania',
+    StartExamHeader = 'Exame de cidadania',
+    StartExamContent = 'Todos os novos cidadãos devem passar no exame antes que possam jogar. Faça no seu tempo, responda com bom senso e não responda aleatoriamente.',
+    SuccessHeader = 'Você passou no exame de cidadania!',
+    SuccessContent = 'Bem -vindo ao nosso servidor!',
+    FailedHeader = 'Você falhou no exame de cidadania!',
+    FailedContent = 'Por favor, tente novamente.',
 
     PassingScore = 4, -- Amount of correct questions required to get citizenship.
 
     NotifyType = 'ox_lib', -- Support for 'ox_lib', 'qb', 'esx', 'okok' and 'custom' to use a different type.
 
-    interaction = { 
+    interaction = {
         type = 'target', -- Supports 'marker' and 'target' and '3dtext'
 
-        markerlabel = 'Begin Citizenship Exam',
+        markerlabel = 'Comece o exame de cidadania',
         markertype = 27, -- https://docs.fivem.net/docs/game-references/markers/
         markercolor = { r = 26, g = 115, b = 179}, -- RGB Color picker: https://g.co/kgs/npUqed1
         markersize = { x = 1.0, y = 1.0, z = 1.0},
 
         targeticon = 'fas fa-passport', -- https://fontawesome.com/icons
-        targetlabel = 'Begin Citizenship Exam',
+        targetlabel = 'Comece o exame de cidadania',
         targetradius = vector3(4, 4, 4), 
         targerdistance = 2.0,
     },
@@ -43,66 +43,63 @@ return {
         rotation = 5.0
     },
 
-    
-    
-    
     Questions = {
         {
-            title = 'What is Meta Gaming?',
+            title = 'O que é Meta Gaming?',
             allowCancel = false,
             options = {
-                {label = 'Metagaming is the usage of any information your character has not learned within roleplay in the city.', correct = true},
-                {label = 'Metagaming is when you try to sell people chicken feet and you don\'t have any chicken feet.', correct = false},
-                {label = 'I don\'t know.', correct = false},
-                {label = 'Metagaming is when you fail to fear for your life.', correct = false}
+                {label = 'Metagaming é o uso de qualquer informação que seu personagem não aprendeu dentro do roleplay na cidade.', correct = true},
+                {label = 'Metagaming é quando você tenta vender pés de galinha para as pessoas e você não tem nenhum pé de galinha.', correct = false},
+                {label = 'Eu não sei.', correct = false},
+                {label = 'Metagaming é quando você não teme pela sua vida.', correct = false}
             }
         },
         {
-            title = 'What is Power Gaming?',
+            title = 'O que é Power Gaming?',
             options = {
-                {label = 'Powergaming is the usage of your mum\'s credit card to purchase Founders Supporter ;)', correct = false},
-                {label = 'Powergaming is the usage of unrealistic forms of roleplay or the outright refusal to roleplay in order to give yourself an unfair advantage.', correct = true},
-                {label = 'Powergaming is when you break into someone\'s clubhouse using exploits.', correct = false},
-                {label = 'I don\'t know.', correct = false}
+                {label = 'Powergaming é o uso do cartão de crédito da sua mãe para comprar Fundador Suporte ;)', correct = false},
+                {label = 'Powergaming é o uso de formas de roleplay irreais ou a recusa total de fazer roleplay para se dar uma vantagem injusta.', correct = true},
+                {label = 'Powergaming é quando você invade o clube de alguém usando exploits.', correct = false},
+                {label = 'Eu não sei.', correct = false}
             }
         },
         {
-            title = 'Are you allowed to use third-party cheating software?',
+            title = 'Você pode usar software de trapaça de terceiros?',
             options = {
-                {label = 'Yes of course, I love eulen!', correct = false},
-                {label = 'This is not permitted under any circumstance.', correct = true},
-                {label = 'Only if you asked your mum for permission.', correct = false},
-                {label = 'I don\'t know.', correct = false}
+                {label = 'Sim, claro, eu adoro eulen!', correct = false},
+                {label = 'Isso não é permitido sob nenhuma circunstância.', correct = true},
+                {label = 'Somente se você pedir permissão para sua mãe.', correct = false},
+                {label = 'Eu não sei.', correct = false}
             }
         },
         {
-            title = 'Which one of the below examples is a Green Zone?',
+            title = 'Qual dos exemplos abaixo é uma Zona Verde?',
             allowCancel = false,
             options = {
-                {label = 'Hospitals.', correct = true},
-                {label = 'Park Benches.', correct = false},
-                {label = 'Everywhere.', correct = false},
-                {label = 'All of the above', correct = false}
+                {label = 'Hospitais.', correct = true},
+                {label = 'Bancos de parque.', correct = false},
+                {label = 'Em todos os lugares.', correct = false},
+                {label = 'Todos os itens acima', correct = false}
             }
         },
         {
-            title = 'What does breaking character mean?',
+            title = 'O que significa quebrar o personagem?',
             allowCancel = false,
             options = {
-                {label = 'When you talk out of character within the city.', correct = true},
-                {label = 'When you break another player\'s character.', correct = false},
-                {label = 'When your uncle isn\'t coming to pick you up from school.', correct = false},
-                {label = 'I don\'t know.', correct = false}
+                {label = 'Quando você fala fora do personagem dentro da cidade.', correct = true},
+                {label = 'Quando você quebra o personagem de outro jogador.', correct = false},
+                {label = 'Quando seu tio não vem te buscar na escola.', correct = false},
+                {label = 'Eu não sei.', correct = false}
             }
         },
         {
-            title = 'Which one of these examples is from the Random Death Match Rule?',
+            title = 'Qual destes exemplos é da Regra de Morte Aleatória?',
             allowCancel = false,
             options = {
-                {label = 'You may not attack another player randomly without first engaging in some form of verbal RP.', correct = true},
-                {label = 'You may kill other players for no reason.', correct = false},
-                {label = 'You may not purchase water unless you\'re a server supporter.', correct = false},
-                {label = 'I don\'t know.', correct = false}
+                {label = 'Você não pode atacar outro jogador aleatoriamente sem primeiro se envolver em algum tipo de RP verbal.', correct = true},
+                {label = 'Você pode matar outros jogadores sem motivo.', correct = false},
+                {label = 'Você não pode comprar água a menos que seja um apoiador do servidor.', correct = false},
+                {label = 'Eu não sei.', correct = false}
             }
         }
     },
