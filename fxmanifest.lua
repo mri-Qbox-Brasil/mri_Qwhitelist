@@ -26,11 +26,5 @@ dependencies {
     'stevo_lib',
     '/server:4500',
 }
-   
 
 lua54 "yes"
-
-
-
-
-

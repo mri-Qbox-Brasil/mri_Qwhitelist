@@ -1,17 +1,16 @@
 --[[
-   _____ _                     _____           _       _       
-  / ____| |                   / ____|         (_)     | |      
- | (___ | |_ _____   _____   | (___   ___ _ __ _ _ __ | |_ ___ 
+   _____ _                     _____           _       _
+  / ____| |                   / ____|         (_)     | |
+ | (___ | |_ _____   _____   | (___   ___ _ __ _ _ __ | |_ ___
   \___ \| __/ _ \ \ / / _ \   \___ \ / __| '__| | '_ \| __/ __|
   ____) | ||  __/\ V / (_) |  ____) | (__| |  | | |_) | |_\__ \
  |_____/ \__\___| \_/ \___/  |_____/ \___|_|  |_| .__/ \__|___/
-                                                | |            
-                                                |_|             
+                                                | |
+                                                |_|
       Discord: https://discord.gg/stevoscripts
       Website: https://stevoscripts.com
       Github: https://github.com/stevoscriptss
-]]--	
-
+]] --
 local Config = lib.require('config')
 local stevo_lib = exports['stevo_lib']:import()
 local examCompleted = false
@@ -27,7 +26,7 @@ function shuffleQuestions(t)
 end
 
 function beginExam()
-    local ped = PlayerPedId()	
+    local ped = PlayerPedId()
     if ped then
         local alert = lib.alertDialog({
             header = Config.StartExamHeader,
@@ -44,15 +43,18 @@ function beginExam()
         end
 
         local score = 0
-        local questions =  shuffleQuestions(Config.Questions)
+        local questions = shuffleQuestions(Config.Questions)
         for _, question in ipairs(questions) do
-            :: StartQuestion ::
+            ::StartQuestion::
             local options = {}
             for _, option in ipairs(question.options) do
-                table.insert(options, {type = 'checkbox', label = option.label})
+                table.insert(options, {
+                    type = 'checkbox',
+                    label = option.label
+                })
             end
             local input = lib.inputDialog(question.title, options)
-            if not input then 
+            if not input then
                 stevo_lib.Notify('You cancelled the exam', 'error')
                 return
             end
@@ -62,9 +64,12 @@ function beginExam()
                     answers = answers + 1
                 end
             end
-            if answers == #input then stevo_lib.Notify('You cannot select all of the options!', 'error') goto StartQuestion end
+            if answers == #input then
+                stevo_lib.Notify('You cannot select all of the options!', 'error')
+                goto StartQuestion
+            end
             for i, answer in ipairs(input) do
-                
+
                 if answer and question.options[i].correct then
                     score = score + 1
                 end
@@ -107,7 +112,9 @@ end
 
 function escapeCitizenship()
 
-    if examCompleted then return end
+    if examCompleted then
+        return
+    end
 
     DoScreenFadeOut(500)
     FreezeEntityPosition(cache.ped, true)
@@ -117,7 +124,7 @@ function escapeCitizenship()
     SetEntityHeading(cache.ped, Config.spawnCoords.h)
 
     FreezeEntityPosition(cache.ped, false)
-    DoScreenFadeIn(1000) 
+    DoScreenFadeIn(1000)
     stevo_lib.Notify(Config.escapeNotify, 'error')
 end
 
@@ -132,22 +139,24 @@ function loadCitizenship()
 
     loadInteractions()
 
-
     local citizenZone = lib.zones.box({
         name = "citizenZone",
         coords = Config.citizenZone.coords,
         size = Config.citizenZone.size,
-        rotation = Config.citizenZone.rotation,
+        rotation = Config.citizenZone.rotation
     })
 
     function citizenZone:onExit(self)
-        if examCompleted then citizenZone:remove() return end
+        if examCompleted then
+            citizenZone:remove()
+            return
+        end
 
         escapeCitizenship()
     end
 
     FreezeEntityPosition(cache.ped, false)
-    DoScreenFadeIn(1000) 
+    DoScreenFadeIn(1000)
     stevo_lib.Notify(Config.loadNotify, 'info')
 end
 
@@ -161,7 +170,7 @@ end
 
 AddEventHandler('onResourceStart', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
-      return
+        return
     end
     OnPlayerLoaded()
 end)

@@ -1,10 +1,6 @@
 return {
-    
-
-
     loadNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player loads in without completing citizenship.
     escapeNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player tries to leave citizenship office.
-
     -- Labels for Exam:
     StartExamLabel = 'Iniciar o exame de cidadania',
     StartExamHeader = 'Exame de cidadania',
@@ -13,11 +9,8 @@ return {
     SuccessContent = 'Bem -vindo ao nosso servidor!',
     FailedHeader = 'Você falhou no exame de cidadania!',
     FailedContent = 'Por favor, tente novamente.',
-
     PassingScore = 4, -- Amount of correct questions required to get citizenship.
-
     NotifyType = 'ox_lib', -- Support for 'ox_lib', 'qb', 'esx', 'okok' and 'custom' to use a different type.
-
     interaction = {
         type = 'target', -- Supports 'marker' and 'target' and '3dtext'
 
@@ -28,7 +21,7 @@ return {
 
         targeticon = 'fas fa-passport', -- https://fontawesome.com/icons
         targetlabel = 'Comece o exame de cidadania',
-        targetradius = vector3(4, 4, 4), 
+        targetradius = vector3(4, 4, 4),
         targerdistance = 2.0,
     },
 
@@ -103,5 +96,4 @@ return {
             }
         }
     },
-    
 }
