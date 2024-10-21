@@ -1,18 +1,4 @@
---[[
-   _____ _                     _____           _       _
-  / ____| |                   / ____|         (_)     | |
- | (___ | |_ _____   _____   | (___   ___ _ __ _ _ __ | |_ ___
-  \___ \| __/ _ \ \ / / _ \   \___ \ / __| '__| | '_ \| __/ __|
-  ____) | ||  __/\ V / (_) |  ____) | (__| |  | | |_) | |_\__ \
- |_____/ \__\___| \_/ \___/  |_____/ \___|_|  |_| .__/ \__|___/
-                                                | |
-                                                |_|
-      Discord: https://discord.gg/stevoscripts
-      Website: https://stevoscripts.com
-      Github: https://github.com/stevoscriptss
-]] --
 local Config = lib.require('config')
-local stevo_lib = exports['stevo_lib']:import()
 local examCompleted = false
 
 function shuffleQuestions(t)
@@ -47,15 +33,13 @@ function beginExam()
         for _, question in ipairs(questions) do
             ::StartQuestion::
             local options = {}
-            for _, option in ipairs(question.options) do
                 table.insert(options, {
-                    type = 'checkbox',
-                    label = option.label
+                    type = 'select',
+                    options = question.options
                 })
-            end
             local input = lib.inputDialog(question.title, options)
             if not input then
-                stevo_lib.Notify('You cancelled the exam', 'error')
+                lib.notify({description = 'Você cancelou o exame', type = 'error'})
                 return
             end
             local answers = 0
@@ -64,13 +48,8 @@ function beginExam()
                     answers = answers + 1
                 end
             end
-            if answers == #input then
-                stevo_lib.Notify('You cannot select all of the options!', 'error')
-                goto StartQuestion
-            end
             for i, answer in ipairs(input) do
-
-                if answer and question.options[i].correct then
+                if answer and question.options[i].value then
                     score = score + 1
                 end
             end
@@ -87,7 +66,7 @@ function beginExam()
                     cancel = 'Fechar'
                 }
             })
-            lib.callback.await('stevo_citizenship:addCitizenship', false)
+            lib.callback.await('mri_Qwhitelist:addCitizenship', false)
             examCompleted = true
             DoScreenFadeOut(800)
             Wait(800)
@@ -125,7 +104,7 @@ function escapeCitizenship()
 
     FreezeEntityPosition(cache.ped, false)
     DoScreenFadeIn(1000)
-    stevo_lib.Notify(Config.escapeNotify, 'error')
+    lib.notify({ description = Config.escapeNotify, type = 'error' })
 end
 
 function loadCitizenship()
@@ -143,7 +122,8 @@ function loadCitizenship()
         name = "citizenZone",
         coords = Config.citizenZone.coords,
         size = Config.citizenZone.size,
-        rotation = Config.citizenZone.rotation
+        rotation = Config.citizenZone.rotation,
+        debug = true
     })
 
     function citizenZone:onExit(self)
@@ -157,11 +137,11 @@ function loadCitizenship()
 
     FreezeEntityPosition(cache.ped, false)
     DoScreenFadeIn(1000)
-    stevo_lib.Notify(Config.loadNotify, 'info')
+    lib.notify({ description = Config.loadNotify, type = 'info' })
 end
 
 function OnPlayerLoaded()
-    local isCitizen = lib.callback.await('stevo_citizenship:checkCitizenship', false)
+    local isCitizen = lib.callback.await('mri_Qwhitelist:checkCitizenship', false)
 
     if not isCitizen then
         loadCitizenship()
@@ -172,9 +152,5 @@ AddEventHandler('onResourceStart', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
         return
     end
-    OnPlayerLoaded()
-end)
-
-RegisterNetEvent('stevo_lib:playerLoaded', function()
     OnPlayerLoaded()
 end)

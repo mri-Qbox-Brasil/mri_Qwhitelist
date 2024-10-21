@@ -1,28 +1,32 @@
-local stevo_lib = exports['stevo_lib']:import()
-local success, result = pcall(MySQL.scalar.await, 'SELECT 1 FROM stevo_citizenship')
+local qbx = exports.qbx_core
+local success, result = pcall(MySQL.scalar.await, 'SELECT 1 FROM mri_qwhitelist')
 
 if not success then
-    MySQL.query([[CREATE TABLE IF NOT EXISTS `stevo_citizenship` (
+    MySQL.query([[CREATE TABLE IF NOT EXISTS `mri_qwhitelist` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `citizen` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `citizen` (`citizen`)
     )]])
-    print('[Stevo Scripts] Deployed database table for stevo_citizenship')
+    print('[mri_Qbox] Deployed database table for mri_qwhitelist')
 end
 
-lib.callback.register('stevo_citizenship:checkCitizenship', function(source)
-    local identifier = stevo_lib.GetIdentifier(source)
+lib.callback.register('mri_Qwhitelist:checkCitizenship', function(source)
+    local randomBucket = 1000 + source
+    qbx.SetPlayerBucket(source, randomBucket)
+    local citizenid = qbx.GetPlayer(source).PlayerData.citizenid
     local isCitizen = false
-    local row = MySQL.single.await('SELECT * FROM `stevo_citizenship` WHERE `citizen` = ? LIMIT 1', {identifier})
+    local row = MySQL.single.await('SELECT * FROM `mri_qwhitelist` WHERE `citizen` = ? LIMIT 1', {citizenid})
     if row then
+        qbx.SetPlayerBucket(source, 0)
         isCitizen = true
     end
     return isCitizen
 end)
 
-lib.callback.register('stevo_citizenship:addCitizenship', function(source)
-    local identifier = stevo_lib.GetIdentifier(source)
-    local id = MySQL.insert.await('INSERT INTO `stevo_citizenship` (citizen) VALUES (?)', {identifier})
+lib.callback.register('mri_Qwhitelist:addCitizenship', function(source)
+    local citizenid = qbx.GetPlayer(source).PlayerData.citizenid
+    local id = MySQL.insert.await('INSERT INTO `mri_qwhitelist` (citizen) VALUES (?)', {citizenid})
+    qbx.SetPlayerBucket(source, 0)
     return id
 end)

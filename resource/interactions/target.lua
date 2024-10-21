@@ -1,35 +1,30 @@
---[[
-   _____ _                     _____           _       _
-  / ____| |                   / ____|         (_)     | |
- | (___ | |_ _____   _____   | (___   ___ _ __ _ _ __ | |_ ___
-  \___ \| __/ _ \ \ / / _ \   \___ \ / __| '__| | '_ \| __/ __|
-  ____) | ||  __/\ V / (_) |  ____) | (__| |  | | |_) | |_\__ \
- |_____/ \__\___| \_/ \___/  |_____/ \___|_|  |_| .__/ \__|___/
-                                                | |
-                                                |_|
-	  StevoScripts | https://discord.gg/stevoscripts
-]] --
 local Config = lib.require('config')
-local stevo_lib = exports['stevo_lib']:import()
 
 if Config.interaction.type ~= "target" then
     return
 end
 
+local targetId
 function loadInteractions()
-
     local options = {
-        options = {{
-            name = 'penis',
-            type = "client",
-            action = beginExam,
+        {
+            name = 'mri_Qwhitelist:targetExam',
+            onSelect = beginExam,
             icon = Config.interaction.targeticon,
             label = Config.interaction.targetlabel
-        }},
+        },
         distance = Config.interaction.targetdistance,
-        rotation = 45
     }
-
-    stevo_lib.target.AddBoxZone('stevo_citizenship:beginExam', Config.examCoords, Config.interaction.targetradius,
-        options)
+    targetId = exports.ox_target:addBoxZone({
+        coords = Config.examCoords,
+        size = Config.interaction.targetradius,
+        rotation = 45,
+        options = options
+    })
 end
+
+AddEventHandler('onResourceStop', function(resource)
+   if resource == GetCurrentResourceName() then
+       exports.ox_target:removeZone(targetId)
+   end
+end)

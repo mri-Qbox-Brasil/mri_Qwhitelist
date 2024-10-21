@@ -1,4 +1,10 @@
-## stevo_citizenship - 1.2.0
+## mri_Qwhitelist
+After fork the resource is managed and maintained by the MRI community to control the addition of new features
+- removed third-part dependency
+
+
+## Original readme
+## credits stevo_citizenship - 1.2.0
 Exam for new players to project your server from trolls!
 
 - Exploit Protection

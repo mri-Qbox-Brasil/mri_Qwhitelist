@@ -6,8 +6,8 @@ description "Citizenship Exam System for preventing trolls!"
 version "1.2.0"
 
 shared_scripts {
-    'config.lua',
     '@ox_lib/init.lua',
+    'config.lua',
 }
 
 client_scripts {
@@ -23,7 +23,6 @@ server_scripts {
 dependencies {
     'ox_lib',
     'oxmysql',
-    'stevo_lib',
     '/server:4500',
 }
 
