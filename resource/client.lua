@@ -154,3 +154,7 @@ AddEventHandler('onResourceStart', function(resourceName)
     end
     OnPlayerLoaded()
 end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+    OnPlayerLoaded()
+end)
