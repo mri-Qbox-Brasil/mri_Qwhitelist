@@ -32,6 +32,9 @@ echo Ultima versao: %last_tag%
 set /p "tag_version=Digite a versao da tag (%next_version%): "
 if "%tag_version%"=="" set "tag_version=%next_version%"
 
+:: Captura do cancelamento
+call :check_cancel
+
 echo Criando tag %tag_version% na branch '%main_branch%' e enviando para o GitHub...
 
 :: Cria a tag
@@ -72,4 +75,19 @@ if "%last_tag%"=="" (
         goto :eof
     )
 )
+
+
+:check_cancel
+:: Pergunta ao usuário para confirmar ou cancelar
+choice /c SN /n /m "Continuar gerando? S = Sim, N = Nao"
+echo ErrorLevel retornado: %errorlevel%
+
+:: Verifique o valor de errorlevel para C ou Y
+if %errorlevel%==1 (
+    echo Continuando com a operacao...
+) else if %errorlevel%==2 (
+    echo Operacao cancelada pelo usuario.
+    exit
+)
+
 exit /b

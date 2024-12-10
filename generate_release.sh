@@ -26,33 +26,56 @@ suggest_next_version() {
   fi
   echo "$next_version"
 }
+
 # Obtém a branch principal
 main_branch=$(get_main_branch)
 echo "Branch principal detectada: $main_branch"
 
-# Sugere a próxima versão com base na última tag
-last_tag=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null)
-next_version=$(suggest_next_version)
+# Busca a última tag válida no repositório
+last_tag=$(git tag --sort=-v:refname | head -n 1)
+if [[ -z "$last_tag" ]]; then
+  echo "Nenhuma tag encontrada. Sugerindo v1.0.0 como primeira tag."
+  next_version="v1.0.0"
+else
+  next_version=$(suggest_next_version)
+fi
+
 echo "Ultima versao: ${last_tag:-Nenhuma}"
 
 # Solicita ao usuário a versão ou usa a sugestão
 read -p "Digite a versao da tag ($next_version): " tag_version
 tag_version=${tag_version:-$next_version}
 
-# Confirmação da criação da tag e envio
-echo "Criando tag $tag_version na branch '$main_branch' e enviando para o GitHub..."
+# Confirmação para continuar ou cancelar
+while true; do
+  read -p "Deseja continuar criando a tag $tag_version? (S = Sim, N = Não): " confirmacao
+  case $confirmacao in
+    [Ss]* )
+      echo "Continuando com a operação..."
+      break
+      ;;
+    [Nn]* )
+      echo "Operação cancelada pelo usuário."
+      exit 0
+      ;;
+    * )
+      echo "Por favor, responda com 'S' para Sim ou 'N' para Não."
+      ;;
+  esac
+done
 
-# Cria a tag
+# Criando a tag
+echo "Criando tag $tag_version na branch '$main_branch' e enviando para o GitHub..."
 git tag "$tag_version" "$main_branch"
 if [[ $? -ne 0 ]]; then
-  echo "Erro: Falha ao criar a tag $tag_version. Verifique se a tag ja existe ou se você tem permissoes adequadas."
+  echo "Erro: Falha ao criar a tag $tag_version. Verifique se a tag ja existe ou se você tem permissões adequadas."
   exit 1
 fi
 
 # Envia a tag para o repositório
 git push origin "$tag_version"
 if [[ $? -ne 0 ]]; then
-  echo "Erro: Falha ao enviar a tag $tag_version para o GitHub. Verifique sua conexão e permissoes."
+  echo "Erro: Falha ao enviar a tag $tag_version para o GitHub. Verifique sua conexão e permissões."
   exit 1
 fi
 
