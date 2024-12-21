@@ -123,7 +123,7 @@ function loadCitizenship()
         coords = Config.citizenZone.coords,
         size = Config.citizenZone.size,
         rotation = Config.citizenZone.rotation,
-        debug = true
+        debug = false
     })
 
     function citizenZone:onExit(self)
