@@ -2,8 +2,8 @@ fx_version "cerulean"
 game "gta5"
 
 author "StevoScripts | steve"
-description "Citizenship Exam System for preventing trolls!"
-version "1.2.0"
+description "REPO_DESCRIPTION"
+version "MRIQBOX_VERSION"
 
 shared_scripts {
     '@ox_lib/init.lua',
