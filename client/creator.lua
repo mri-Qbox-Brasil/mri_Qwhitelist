@@ -19,7 +19,7 @@ end
 
 local function OnExit()
     lib.callback(
-        "mri_Qwhitelist:saveConfig",
+        "mri_Qwhitelist:Server:SaveConfig",
         false,
         function(result)
             return true
@@ -543,7 +543,7 @@ local function AddWhitelist(args)
     if tonumber(identifier) then
         identifier = tonumber(identifier)
     end
-    if lib.callback.await("mri_Qwhitelist:addCitizenship", false, identifier) then
+    if lib.callback.await("mri_Qwhitelist:Server:AddCitizenship", false, identifier) then
         lib.notify({description = "Whitelist adicionada com sucesso!", type = "success"})
     end
     args.callback()
@@ -558,7 +558,7 @@ local function RemoveWhitelist(args)
     if tonumber(identifier) then
         identifier = tonumber(identifier)
     end
-    if lib.callback.await("mri_Qwhitelist:removeCitizenship", false, identifier) then
+    if lib.callback.await("mri_Qwhitelist:Server:RemoveCitizenship", false, identifier) then
         lib.notify({description = "Whitelist revogada com sucesso!", type = "success"})
     end
     args.callback()
@@ -625,7 +625,7 @@ if GetResourceState("mri_Qbox") == "started" then
     )
 else
     lib.callback.register(
-        "mri_Qwhitelist:manageWhitelistMenu",
+        "mri_Qwhitelist:Client:ManageWhitelistMenu",
         function()
             manageCitizenship()
             return true

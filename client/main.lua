@@ -77,10 +77,7 @@ local function beginExam()
         local anwserPercentage = ((100 * correctAnswers) / #Config.Questions)
         if anwserPercentage >= Config.Percent then
             showAlertDialog(Config.SuccessHeader, Config.SuccessContent, false, "Jogar")
-            lib.callback.await("mri_Qwhitelist:addCitizenship", false)
-            examCompleted = true
-            Zone:Remove()
-            teleportPlayer(ped, Config.CompletionCoords)
+            lib.callback.await("mri_Qwhitelist:Server:addCitizenship", false)
         else
             showAlertDialog(Config.FailedHeader, Config.FailedContent, false, "Entendi")
         end
@@ -117,13 +114,29 @@ function loadCitizenship()
 end
 
 local function OnPlayerLoaded()
-    Config = lib.callback.await("mri_Qwhitelist:getConfig", false)
-    if not lib.callback.await("mri_Qwhitelist:checkCitizenship", false) then
+    Config = lib.callback.await("mri_Qwhitelist:Server:GetConfig", false)
+    if not lib.callback.await("mri_Qwhitelist:Server:CheckCitizenship", false) then
         if Config.Enabled then
-            loadCitizenship()
+            OnPlayerLoaded()
         end
     end
 end
+
+lib.callback.register(
+    "mri_Qwhitelist:Client:AddCitizenship",
+    function()
+        examCompleted = true
+        Zone:Remove()
+        teleportPlayer(cache.ped, Config.CompletionCoords)
+    end
+)
+
+lib.callback.register(
+    "mri_Qwhitelist:Client:RemoveCitizenship",
+    function()
+        loadCitizenship()
+    end
+)
 
 AddEventHandler(
     "onResourceStart",
