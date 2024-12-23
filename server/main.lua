@@ -46,6 +46,10 @@ local function SetConfig(data)
 end
 
 local function SetPlayerBucket(target, bucket)
+    local actualBucket = GetPlayerRoutingBucket(target)
+    if actualBucket == bucket then
+        return
+    end
     exports.qbx_core:SetPlayerBucket(target, bucket)
 end
 
@@ -88,14 +92,14 @@ AddEventHandler('onResourceStart', function(resource)
 end)
 
 lib.callback.register(
-    "mri_Qwhitelist:getConfig",
+    "mri_Qwhitelist:Server:GetConfig",
     function(source)
         return Config
     end
 )
 
 lib.callback.register(
-    "mri_Qwhitelist:saveConfig",
+    "mri_Qwhitelist:Server:SaveConfig",
     function(source, data)
         SetConfig(json.encode(data))
         Config = data
@@ -105,7 +109,7 @@ lib.callback.register(
 )
 
 lib.callback.register(
-    "mri_Qwhitelist:checkCitizenship",
+    "mri_Qwhitelist:Server:CheckCitizenship",
     function(source)
         local playerBucket = 1000 + source
         exports.qbx_core:SetPlayerBucket(source, playerBucket)
@@ -121,7 +125,7 @@ lib.callback.register(
 )
 
 lib.callback.register(
-    "mri_Qwhitelist:addCitizenship",
+    "mri_Qwhitelist:Server:AddCitizenship",
     function(source, identifier)
 
         local player = GetPlayer(identifier or source, identifier and source or nil)
@@ -138,12 +142,13 @@ lib.callback.register(
         end
 
         SetPlayerBucket(player.PlayerData.source, 0)
+        lib.callback.await("mri_Qwhitelist:Client:AddCitizenship", player.PlayerData.source, false)
         return status
     end
 )
 
 lib.callback.register(
-    "mri_Qwhitelist:removeCitizenship",
+    "mri_Qwhitelist:Server:RemoveCitizenship",
     function(source, identifier)
 
         local player = GetPlayer(identifier)
@@ -157,6 +162,8 @@ lib.callback.register(
             lib.notify(source, {description = "Erro ao revogar whitelist, verifique o console para mais informações.", type = "error", duration = 5000})
         end
 
+        SetPlayerBucket(player.PlayerData.source, 1000 + player.PlayerData.source)
+        lib.callback.await("mri_Qwhitelist:Client:RemoveCitizenship", player.PlayerData.source, false)
         return status
     end
 )
