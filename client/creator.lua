@@ -494,16 +494,16 @@ local function ConfigWhitelist()
                     callback = ConfigWhitelist
                 }
             },
-            {
-                title = "Configurar Perguntas",
-                description = "Configurar as perguntas da Whitelist",
-                icon = "list-check",
-                iconAnimation = Config.IconAnimation,
-                onSelect = ConfigQuestions,
-                args = {
-                    callback = ConfigWhitelist
-                }
-            },
+            -- {
+            --     title = "Configurar Perguntas",
+            --     description = "Configurar as perguntas da Whitelist",
+            --     icon = "list-check",
+            --     iconAnimation = Config.IconAnimation,
+            --     onSelect = ConfigQuestions,
+            --     args = {
+            --         callback = ConfigWhitelist
+            --     }
+            -- },
             {
                 title = "Ver Perguntas",
                 description = "Gerenciar as perguntas da Whitelist",
