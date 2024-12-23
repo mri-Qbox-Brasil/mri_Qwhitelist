@@ -119,7 +119,9 @@ end
 local function OnPlayerLoaded()
     Config = lib.callback.await("mri_Qwhitelist:getConfig", false)
     if not lib.callback.await("mri_Qwhitelist:checkCitizenship", false) then
-        loadCitizenship()
+        if Config.Enabled then
+            loadCitizenship()
+        end
     end
 end
 

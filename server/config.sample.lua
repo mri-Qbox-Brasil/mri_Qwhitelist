@@ -1,6 +1,6 @@
 Config = {
-    Enabled = false, -- Set to false to disable the entire system.
-    Percent = 70, -- Percentage of questions that need to be answered correctly to get citizenship.
+    Enabled = true, -- Coloque false para desativar a whitelist.
+    Percent = 70, -- Porcentagem de respostas corretas para liberar o player
     loadNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player loads in without completing citizenship.
     escapeNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player tries to leave citizenship office.
     -- Labels for Exam:

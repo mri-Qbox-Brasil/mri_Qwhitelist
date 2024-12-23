@@ -459,20 +459,20 @@ local function ConfigWhitelist()
         title = "Configurações da Whitelist",
         onExit = OnExit,
         options = {
-            -- {
-            --     title = "Ativar/Desativar",
-            --     description = string.format(
-            --         "Ativar ou desativar a Whitelist. Ativo: %s",
-            --         ifThen(Config.Enabled, "Sim", "Não")
-            --     ),
-            --     icon = ifThen(Config.Enabled, "toggle-on", "toggle-off"),
-            --     iconColor = ifThen(Config.Enabled, ColorScheme.success, ColorScheme.danger),
-            --     iconAnimation = Config.IconAnimation,
-            --     onSelect = ToggleWhitelist,
-            --     args = {
-            --         callback = ConfigWhitelist
-            --     }
-            -- },
+            {
+                title = "Ativar/Desativar",
+                description = string.format(
+                    "Ativar ou desativar a Whitelist. Ativo: %s",
+                    ifThen(Config.Enabled, "Sim", "Não")
+                ),
+                icon = ifThen(Config.Enabled, "toggle-on", "toggle-off"),
+                iconColor = ifThen(Config.Enabled, ColorScheme.success, ColorScheme.danger),
+                iconAnimation = Config.IconAnimation,
+                onSelect = ToggleWhitelist,
+                args = {
+                    callback = ConfigWhitelist
+                }
+            },
             {
                 title = "Configurar Locais",
                 description = "Configurar os locais da Whitelist",
@@ -586,6 +586,7 @@ function manageCitizenship()
                 title = "Liberar Player",
                 description = "Liberar um player da Whitelist",
                 icon = "user-plus",
+                disabled = not Config.Enabled,
                 iconAnimation = Config.IconAnimation,
                 onSelect = AddWhitelist,
                 args = {
@@ -596,6 +597,7 @@ function manageCitizenship()
                 title = "Revogar Whitelist",
                 description = "Revogar a Whitelist de um player",
                 icon = "user-minus",
+                disabled = not Config.Enabled,
                 iconColor = ColorScheme.danger,
                 iconAnimation = Config.IconAnimation,
                 onSelect = RemoveWhitelist,
