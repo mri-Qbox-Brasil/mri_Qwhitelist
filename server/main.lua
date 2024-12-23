@@ -30,6 +30,21 @@ local function RemoveCitizenship(citizenId, identifier)
     return false
 end
 
+local function GetConfig()
+    local SELECT_DATA = "SELECT * FROM mri_qwhitelistcfg"
+    local result = MySQL.Sync.fetchAll(SELECT_DATA, {})
+    if not result or #result == 0 then
+        return false
+    end
+    Config = json.decode(result[1].config)
+end
+
+local function SetConfig(data)
+    local INSER_DATA = "INSERT INTO `mri_qwhitelistcfg` (id, config) VALUES (?, ?) ON DUPLICATE KEY UPDATE `config` = ?"
+    local result = MySQL.Sync.execute(INSER_DATA, {1, data, data})
+    print(json.encode(result))
+end
+
 local function SetPlayerBucket(target, bucket)
     exports.qbx_core:SetPlayerBucket(target, bucket)
 end
@@ -49,6 +64,21 @@ local function Initialize()
         )
         print("[mri_Qbox] Deployed database table for mri_qwhitelist")
     end
+
+    success, result = pcall(MySQL.scalar.await, "SELECT 1 FROM mri_qwhitelistcfg")
+
+    if not success then
+        MySQL.query.await(
+            [[CREATE TABLE IF NOT EXISTS `mri_qwhitelistcfg` (
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `config` LONGTEXT NOT NULL,
+        PRIMARY KEY (`id`)
+        )]]
+        )
+        print("[mri_Qbox] Deployed database table for mri_qwhitelistcfg")
+    end
+
+    GetConfig()
 end
 
 AddEventHandler('onResourceStart', function(resource)
@@ -67,6 +97,7 @@ lib.callback.register(
 lib.callback.register(
     "mri_Qwhitelist:saveConfig",
     function(source, data)
+        SetConfig(json.encode(data))
         Config = data
         print("[mri_Qwhitelist] Config saved")
         return true
