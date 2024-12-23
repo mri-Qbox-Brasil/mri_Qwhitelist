@@ -1,29 +1,30 @@
 fx_version "cerulean"
 game "gta5"
+lua54 "yes"
+use_experimental_fxv2_oal "yes"
 
-author "StevoScripts | steve"
 description "REPO_DESCRIPTION"
+author "MRI QBOX Team"
 version "MRIQBOX_VERSION"
 
-shared_scripts {
-    '@ox_lib/init.lua',
-    'config.lua',
-}
+ox_lib "locale"
 
-client_scripts {
-    'resource/client.lua',
-    'resource/interactions/**.lua',
+shared_scripts {
+    "@ox_lib/init.lua",
 }
 
 server_scripts {
-    '@oxmysql/lib/MySQL.lua',
-    'resource/server.lua',
+    "@oxmysql/lib/MySQL.lua",
+    "server/*.lua"
+}
+
+client_scripts {
+    "interactions/*.lua",
+    "client/*.lua"
 }
 
 dependencies {
-    'ox_lib',
-    'oxmysql',
-    '/server:4500',
+    "ox_lib",
+    "oxmysql",
+    "/server:4500"
 }
-
-lua54 "yes"
