@@ -1,13 +1,13 @@
 Target = {
     TargetId = nil,
-    LoadInteractions = function()
+    LoadInteractions = function(self, data)
         if Config.Interaction.Type ~= "target" then
             return
         end
         local options = {
             {
                 name = "mri_Qwhitelist:targetExam",
-                onSelect = beginExam,
+                onSelect = data.callbackFunction,
                 icon = Config.Interaction.TargetIcon,
                 label = Config.Interaction.TargetLabel,
                 distance = Config.Interaction.TargetDistance,

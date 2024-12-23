@@ -459,20 +459,20 @@ local function ConfigWhitelist()
         title = "Configurações da Whitelist",
         onExit = OnExit,
         options = {
-            {
-                title = "Ativar/Desativar",
-                description = string.format(
-                    "Ativar ou desativar a Whitelist. Ativo: %s",
-                    ifThen(Config.Enabled, "Sim", "Não")
-                ),
-                icon = ifThen(Config.Enabled, "toggle-on", "toggle-off"),
-                iconColor = ifThen(Config.Enabled, ColorScheme.success, ColorScheme.danger),
-                iconAnimation = Config.IconAnimation,
-                onSelect = ToggleWhitelist,
-                args = {
-                    callback = ConfigWhitelist
-                }
-            },
+            -- {
+            --     title = "Ativar/Desativar",
+            --     description = string.format(
+            --         "Ativar ou desativar a Whitelist. Ativo: %s",
+            --         ifThen(Config.Enabled, "Sim", "Não")
+            --     ),
+            --     icon = ifThen(Config.Enabled, "toggle-on", "toggle-off"),
+            --     iconColor = ifThen(Config.Enabled, ColorScheme.success, ColorScheme.danger),
+            --     iconAnimation = Config.IconAnimation,
+            --     onSelect = ToggleWhitelist,
+            --     args = {
+            --         callback = ConfigWhitelist
+            --     }
+            -- },
             {
                 title = "Configurar Locais",
                 description = "Configurar os locais da Whitelist",
@@ -543,7 +543,9 @@ local function AddWhitelist(args)
     if tonumber(identifier) then
         identifier = tonumber(identifier)
     end
-    lib.callback.await("mri_Qwhitelist:addCitizenship", false, identifier)
+    if lib.callback.await("mri_Qwhitelist:addCitizenship", false, identifier) then
+        lib.notify({description = "Whitelist adicionada com sucesso!", type = "success"})
+    end
     args.callback()
 end
 
@@ -556,7 +558,9 @@ local function RemoveWhitelist(args)
     if tonumber(identifier) then
         identifier = tonumber(identifier)
     end
-    lib.callback.await("mri_Qwhitelist:removeCitizenship", false, identifier)
+    if lib.callback.await("mri_Qwhitelist:removeCitizenship", false, identifier) then
+        lib.notify({description = "Whitelist revogada com sucesso!", type = "success"})
+    end
     args.callback()
 end
 

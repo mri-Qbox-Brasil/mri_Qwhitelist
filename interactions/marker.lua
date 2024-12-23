@@ -1,5 +1,5 @@
 Marker = {
-    LoadInteractions = function()
+    LoadInteractions = function(self, data)
         if Config.Interaction.Type ~= "marker" then
             return
         end
@@ -55,7 +55,7 @@ Marker = {
             end
 
             if self.currentDistance < 3 and IsControlJustReleased(0, 38) then
-                beginExam()
+                data.callbackFunction()
             end
         end
     end

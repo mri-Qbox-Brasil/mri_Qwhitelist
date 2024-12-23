@@ -20,7 +20,7 @@ local function AddCitizenship(citizenId, identifier)
 end
 
 local function RemoveCitizenship(citizenId, identifier)
-    local status, err = pcall(MySQL.delete.await, "DELETE FROM `mri_qwhitelist` WHERE `citizen` = ?", {citizenId})
+    local status, err = pcall(MySQL.update.await, "DELETE FROM `mri_qwhitelist` WHERE `citizen` = ?", {citizenId})
 
     if status then
         return true
@@ -150,6 +150,7 @@ lib.callback.register(
         if not player then
             return false
         end
+        print('has player')
 
         local status = RemoveCitizenship(player.PlayerData.citizenid, identifier)
         if not status then

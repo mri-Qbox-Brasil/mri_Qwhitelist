@@ -62,9 +62,6 @@ local function teleportPlayer(player, coords)
 end
 
 local function beginExam()
-    if Config.Percent > #Config.Questions then
-        Config.Percent = 70
-    end
     local correctAnswers = 0
     local ped = PlayerPedId()
     if ped then
@@ -77,8 +74,8 @@ local function beginExam()
         for _, question in ipairs(questions) do
             correctAnswers = correctAnswers + (askQuestion(question) and 1 or 0)
         end
-
-        if correctAnswers >= Config.Percent then
+        local anwserPercentage = ((100 * correctAnswers) / #Config.Questions)
+        if anwserPercentage >= Config.Percent then
             showAlertDialog(Config.SuccessHeader, Config.SuccessContent, false, "Jogar")
             lib.callback.await("mri_Qwhitelist:addCitizenship", false)
             examCompleted = true
@@ -99,11 +96,11 @@ function loadCitizenship()
     teleportPlayer(cache.ped, Config.SpawnCoords)
 
     if Config.Interaction.Type == "marker" then
-        Marker:LoadInteractions()
+        Marker:LoadInteractions({callbackFunction = beginExam})
     elseif Config.Interaction.Type == "target" then
-        Target:LoadInteractions()
+        Target:LoadInteractions({callbackFunction = beginExam})
     elseif Config.Interaction.Type == "3dtext" then
-        Text:LoadInteractions()
+        Text:LoadInteractions({callbackFunction = beginExam})
     end
 
     local zoneData = {

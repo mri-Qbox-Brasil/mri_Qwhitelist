@@ -1,5 +1,5 @@
 Text = {
-    LoadInteractions = function()
+    LoadInteractions = function(self, data)
         if Config.Interaction.Type ~= "3dtext" then
             return
         end
@@ -27,7 +27,7 @@ Text = {
                 DrawText(_x, _y)
             end
             if self.currentDistance < 3 and IsControlJustReleased(0, 38) then
-                beginExam()
+                data.callbackFunction()
             end
         end
     end
