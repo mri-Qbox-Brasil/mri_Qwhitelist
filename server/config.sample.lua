@@ -1,5 +1,6 @@
 Config = {
     Enabled = true, -- Coloque false para desativar a whitelist.
+    Debug = false, -- Coloque true para habilitar o debug.
     Percent = 70, -- Porcentagem de respostas corretas para liberar o player
     loadNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player loads in without completing citizenship.
     escapeNotify = 'Você deve completar o exame de cidadania para jogar!', -- Notification when player tries to leave citizenship office.

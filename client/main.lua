@@ -105,7 +105,7 @@ function loadCitizenship()
         coords = Config.citizenZone.coords,
         size = Config.citizenZone.size,
         rotation = Config.citizenZone.rotation,
-        debug = true,
+        debug = Config.Debug,
         onExit = escapeCitizenship
     }
 
@@ -117,7 +117,7 @@ local function OnPlayerLoaded()
     Config = lib.callback.await("mri_Qwhitelist:Server:GetConfig", false)
     if not lib.callback.await("mri_Qwhitelist:Server:CheckCitizenship", false) then
         if Config.Enabled then
-            OnPlayerLoaded()
+            loadCitizenship()
         end
     end
 end
