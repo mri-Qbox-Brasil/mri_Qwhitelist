@@ -155,7 +155,6 @@ lib.callback.register(
         if not player then
             return false
         end
-        print('has player')
 
         local status = RemoveCitizenship(player.PlayerData.citizenid, identifier)
         if not status then

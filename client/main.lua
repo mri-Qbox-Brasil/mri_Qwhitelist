@@ -77,7 +77,7 @@ local function beginExam()
         local anwserPercentage = ((100 * correctAnswers) / #Config.Questions)
         if anwserPercentage >= Config.Percent then
             showAlertDialog(Config.SuccessHeader, Config.SuccessContent, false, "Jogar")
-            lib.callback.await("mri_Qwhitelist:Server:addCitizenship", false)
+            lib.callback.await("mri_Qwhitelist:Server:AddCitizenship", false)
         else
             showAlertDialog(Config.FailedHeader, Config.FailedContent, false, "Entendi")
         end
