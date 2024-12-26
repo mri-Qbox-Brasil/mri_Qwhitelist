@@ -95,6 +95,7 @@ function loadCitizenship()
     if Config.Interaction.Type == "marker" then
         Marker:LoadInteractions({callbackFunction = beginExam})
     elseif Config.Interaction.Type == "target" then
+        if Target.TargetId then return end
         Target:LoadInteractions({callbackFunction = beginExam})
     elseif Config.Interaction.Type == "3dtext" then
         Text:LoadInteractions({callbackFunction = beginExam})
