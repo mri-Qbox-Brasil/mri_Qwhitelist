@@ -65,6 +65,18 @@ local function beginExam()
     local correctAnswers = 0
     local ped = PlayerPedId()
     if ped then
+        if Config["PreExamQuestions"] and Config.PreExamQuestions["Enabled"] then
+            local input = lib.inputDialog(Config.PreExamQuestions.label, Config.PreExamQuestions.information)
+            if not input then
+                return
+            end
+            local result = {}
+            for k, v in pairs(Config.PreExamQuestions.information) do
+                result[v.label] = {kind = v.kind, value = input[k]}
+            end
+
+            lib.callback.await("mri_Qwhitelist:Server:SendPreExamData", false, result)
+        end
         if not showAlertDialog(Config.StartExamHeader, Config.StartExamContent, true, "Iniciar") then
             return
         end
@@ -95,7 +107,9 @@ function loadCitizenship()
     if Config.Interaction.Type == "marker" then
         Marker:LoadInteractions({callbackFunction = beginExam})
     elseif Config.Interaction.Type == "target" then
-        if Target.TargetId then return end
+        if Target.TargetId then
+            return
+        end
         Target:LoadInteractions({callbackFunction = beginExam})
     elseif Config.Interaction.Type == "3dtext" then
         Text:LoadInteractions({callbackFunction = beginExam})

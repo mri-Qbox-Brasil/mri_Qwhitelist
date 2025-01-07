@@ -1,3 +1,7 @@
+local function RGBToLong(cor)
+    return (cor.r * 65536) + (cor.g * 256) + cor.b
+end
+
 local function GetPlayer(identifier, notifySource)
     if tonumber(identifier) then
         return exports.qbx_core:GetPlayer(identifier)
@@ -54,7 +58,6 @@ local function SetPlayerBucket(target, bucket)
 end
 
 local function Initialize()
-
     local success, result = pcall(MySQL.scalar.await, "SELECT 1 FROM mri_qwhitelist")
 
     if not success then
@@ -85,11 +88,14 @@ local function Initialize()
     GetConfig()
 end
 
-AddEventHandler('onResourceStart', function(resource)
-   if resource == GetCurrentResourceName() then
-      Initialize()
-   end
-end)
+AddEventHandler(
+    "onResourceStart",
+    function(resource)
+        if resource == GetCurrentResourceName() then
+            Initialize()
+        end
+    end
+)
 
 lib.callback.register(
     "mri_Qwhitelist:Server:GetConfig",
@@ -127,7 +133,6 @@ lib.callback.register(
 lib.callback.register(
     "mri_Qwhitelist:Server:AddCitizenship",
     function(source, identifier)
-
         local player = GetPlayer(identifier or source, identifier and source or nil)
         if not player then
             return false
@@ -136,7 +141,14 @@ lib.callback.register(
         local status = AddCitizenship(player.PlayerData.citizenid, identifier or source)
         if not status then
             if identifier then
-                lib.notify(source, {description = "Erro ao liberar player, verifique o console para mais informações.", type = "error", duration = 5000})
+                lib.notify(
+                    source,
+                    {
+                        description = "Erro ao liberar player, verifique o console para mais informações.",
+                        type = "error",
+                        duration = 5000
+                    }
+                )
             end
             return status
         end
@@ -150,7 +162,6 @@ lib.callback.register(
 lib.callback.register(
     "mri_Qwhitelist:Server:RemoveCitizenship",
     function(source, identifier)
-
         local player = GetPlayer(identifier)
         if not player then
             return false
@@ -158,11 +169,108 @@ lib.callback.register(
 
         local status = RemoveCitizenship(player.PlayerData.citizenid, identifier)
         if not status then
-            lib.notify(source, {description = "Erro ao revogar whitelist, verifique o console para mais informações.", type = "error", duration = 5000})
+            lib.notify(
+                source,
+                {
+                    description = "Erro ao revogar whitelist, verifique o console para mais informações.",
+                    type = "error",
+                    duration = 5000
+                }
+            )
         end
 
         SetPlayerBucket(player.PlayerData.source, 1000 + player.PlayerData.source)
         lib.callback.await("mri_Qwhitelist:Client:RemoveCitizenship", player.PlayerData.source, false)
         return status
+    end
+)
+
+lib.callback.register(
+    "mri_Qwhitelist:Server:SendPreExamData",
+    function(source, data)
+        if not Config.PreExamQuestions.WebHook then
+            print("Sem webhook para enviar os dados...")
+            return
+        end
+        local color =
+            RGBToLong(
+            {
+                r = 0,
+                g = 255,
+                b = 255
+            }
+        )
+        local player = GetPlayer(source)
+        if not player then
+            return
+        end
+        local fields = {
+            {
+                name = "Identificador:",
+                value = player.PlayerData.name,
+                inline = true
+            },
+            {
+                name = "CitizenID:",
+                value = player.PlayerData.citizenid,
+                inline = true
+            },
+            {
+                name = "Nome do Player:",
+                value = string.format(
+                    "%s %s",
+                    player.PlayerData.charinfo.firstname,
+                    player.PlayerData.charinfo.lastname
+                ),
+                inline = false
+            }
+        }
+        for k, v in pairs(data) do
+            local value = v.value
+            if v.kind == "phone" and Config.PreExamQuestions.FormatPhone then
+                value = string.format("https://wa.me/55%s", value)
+            end
+            fields[#fields + 1] = {
+                name = k,
+                value = value,
+                inline = false
+            }
+        end
+        local obj =
+            json.encode(
+            {
+                embeds = {
+                    {
+                        title = "Dados Pré-Exame",
+                        fields = fields,
+                        footer = {
+                            text = "MRI QBOX ⋅ " .. os.date("%d/%m/%Y %X"),
+                            icon_url = "https://assets.mriqbox.com.br/branding/logo96.png"
+                        },
+                        color = color
+                    }
+                }
+            }
+        )
+        PerformHttpRequest(
+            Config.PreExamQuestions.WebHook,
+            function(errorCode, resultData, resultHeaders, errorData)
+                if Config.DebugHook then
+                    print(
+                        string.format(
+                            "Webhook:\n\tCódigo: %s\n\tResultado: %s\n\tErro: %s",
+                            errorCode,
+                            ttc.shared.toString(resultData),
+                            ttc.shared.toString(errorData)
+                        )
+                    )
+                end
+            end,
+            "POST",
+            obj,
+            {
+                ["Content-Type"] = "application/json"
+            }
+        )
     end
 )

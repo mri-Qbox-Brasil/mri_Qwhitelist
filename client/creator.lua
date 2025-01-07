@@ -318,6 +318,34 @@ function ListQuestions()
     lib.showContext(ctx.id)
 end
 
+local function ListPreExamQuestions()
+    local ctx = {
+        id = "menu_pre_questions",
+        menu = "menu_whitelist",
+        title = "Perguntas pré-exame",
+        onExit = OnExit,
+        options = {}
+    }
+
+    for key, question in ipairs(Config.PreExamQuestions) do
+        ctx.options[#ctx.options + 1] = {
+            title = question.question,
+            description = "aaa",
+             --string.format("Índice: %s, Opções: %s", key, #question.options or 0),
+            icon = "clipboard-question",
+            iconAnimation = Config.IconAnimation,
+            arrow = true,
+            onSelect = QuestionActionMenu,
+            args = {
+                callback = ListPreExamQuestions,
+                questionKey = key
+            }
+        }
+    end
+    lib.registerContext(ctx)
+    lib.showContext(ctx.id)
+end
+
 local function ToggleWhitelist(args)
     Config.Enabled = not Config.Enabled
     args.callback()
@@ -512,6 +540,13 @@ local function ConfigWhitelist()
                 iconAnimation = Config.IconAnimation,
                 onSelect = ListQuestions
             }
+            -- {
+            --     title = "Perguntas pré-exame",
+            --     description = "Perguntas que serão feitas antes do exame",
+            --     icon = "list",
+            --     iconAnimation = Config.IconAnimation,
+            --     onSelect = ListPreExamQuestions
+            -- }
         }
     }
     lib.registerContext(ctx)
