@@ -46,7 +46,6 @@ end
 local function SetConfig(data)
     local INSER_DATA = "INSERT INTO `mri_qwhitelistcfg` (id, config) VALUES (?, ?) ON DUPLICATE KEY UPDATE `config` = ?"
     local result = MySQL.Sync.execute(INSER_DATA, {1, data, data})
-    print(json.encode(result))
 end
 
 local function SetPlayerBucket(target, bucket)
