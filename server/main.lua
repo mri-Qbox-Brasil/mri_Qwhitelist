@@ -116,6 +116,9 @@ lib.callback.register(
 lib.callback.register(
     "mri_Qwhitelist:Server:CheckCitizenship",
     function(source)
+        if Config.Enabled == false then
+            return true
+        end
         local playerBucket = 1000 + source
         exports.qbx_core:SetPlayerBucket(source, playerBucket)
         local player = exports.qbx_core:GetPlayer(source)
