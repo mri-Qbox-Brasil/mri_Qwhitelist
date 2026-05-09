@@ -119,15 +119,17 @@ lib.callback.register(
         if Config.Enabled == false then
             return true
         end
-        local playerBucket = 1000 + source
-        exports.qbx_core:SetPlayerBucket(source, playerBucket)
         local player = exports.qbx_core:GetPlayer(source)
+        if not player then
+            return true
+        end
         local citizenid = player.PlayerData.citizenid
         local row = MySQL.single.await("SELECT * FROM `mri_qwhitelist` WHERE `citizen` = ? LIMIT 1", {citizenid})
         if row then
-            exports.qbx_core:SetPlayerBucket(source, 0)
+            SetPlayerBucket(source, 0)
             return true
         end
+        SetPlayerBucket(source, 1000 + source)
         return false
     end
 )

@@ -157,6 +157,9 @@ AddEventHandler(
         if (GetCurrentResourceName() ~= resourceName) then
             return
         end
+        if not LocalPlayer.state.isLoggedIn then
+            return
+        end
         OnPlayerLoaded()
     end
 )
