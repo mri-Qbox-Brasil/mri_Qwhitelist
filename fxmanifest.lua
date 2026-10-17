@@ -9,8 +9,27 @@ version "MRIQBOX_VERSION"
 
 ox_lib "locale"
 
+<<<<<<< fork
 shared_scripts {
     "@ox_lib/init.lua",
+||||||| base
+shared_scripts {
+    'config.lua',
+    '@ox_lib/init.lua',
+}
+
+client_scripts {
+    'resource/client.lua',
+    'resource/interactions/**.lua',
+=======
+shared_script {
+    '@ox_lib/init.lua',
+    'config.lua'
+}
+
+client_scripts {
+    'resource/client.lua',
+>>>>>>> upstream
 }
 
 server_scripts {
@@ -23,8 +42,21 @@ client_scripts {
     "client/*.lua"
 }
 
+files {
+    "locales/*.json"
+}
+
 dependencies {
+<<<<<<< fork
     "ox_lib",
     "oxmysql",
     "/server:4500"
+||||||| base
+    'ox_lib',
+    'oxmysql',
+    'stevo_lib',
+    '/server:4500',
+=======
+    'ox_lib'
+>>>>>>> upstream
 }
